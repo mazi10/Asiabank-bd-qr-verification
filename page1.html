@@ -82,7 +82,6 @@
             padding: 32px 24px;
             text-align: center;
             color: #ffffff;
-            position: relative;
         }
         .shield-icon {
             width: 64px;
@@ -139,16 +138,88 @@
             text-align: right;
         }
 
-        /* সিকিউর ফুটার নোট */
+        /* সিকিউর ফুটার ও ছোট ইনফো লিংকস */
         .receipt-footer {
             background: #f8fafc;
             border-top: 1px solid #e2e8f0;
-            padding: 16px 32px;
+            padding: 16px 24px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 10px;
             align-items: center;
             font-size: 11px;
             color: #64748b;
+        }
+        .footer-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .footer-links a {
+            color: #0284c7;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover {
+            color: #0369a1;
+            text-decoration: underline;
+        }
+
+        /* পপ-আপ মডাল ডিজাইন */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+        .modal-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            animation: scaleUp 0.3s ease;
+        }
+        @keyframes scaleUp {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+        .modal-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #003d82;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #64748b;
+        }
+        .modal-body {
+            font-size: 13px;
+            color: #334155;
+            line-height: 1.6;
         }
 
         /* এরর ডিজাইন */
@@ -187,11 +258,29 @@
         </div>
     </main>
 
-    <!-- ফুটার -->
+    <!-- ফুটার ও ইনফো লিংকস -->
     <footer class="receipt-footer">
-        <span>&copy; 2026 Bank Asia PLC. All rights reserved.</span>
-        <span>Core Banking Verification System v4.2</span>
+        <div class="footer-links">
+            <a onclick="openModal('about')">About</a>
+            <a onclick="openModal('connect')">Connect</a>
+            <a onclick="openModal('contact')">Contact</a>
+            <a onclick="openModal('email')">Email</a>
+        </div>
+        <span>&copy; 2026 Bank Asia PLC. All rights reserved. Secure Core Banking System.</span>
     </footer>
+
+    <!-- ইনফো পপ-আপ মডাল -->
+    <div class="modal-overlay" id="infoModal" onclick="closeModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 id="modalTitle">Information</h3>
+                <button class="close-btn" onclick="closeModalDirect()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalText">
+                <!-- কন্টেন্ট এখানে লোড হবে -->
+            </div>
+        </div>
+    </div>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
@@ -238,6 +327,44 @@
                 <p>The scanned QR code is invalid, expired, or not recognized by Bank Asia servers.</p>
             </div>
         `;
+    }
+
+    // পপ-আপ মডাল হ্যান্ডলার ফাংশন
+    const modalData = {
+        about: {
+            title: "About Bank Asia PLC",
+            text: "Bank Asia PLC is a leading private commercial bank in Bangladesh committed to providing cutting-edge digital banking solutions, secure transactions, and exceptional financial services since 1999."
+        },
+        connect: {
+            title: "Connect With Us",
+            text: "Stay connected through our official channels: Corporate Head Office, TMC Building (7th Floor), 52 Kawran Bazar C/A, Dhaka-1215. Explore our official digital banking networks worldwide."
+        },
+        contact: {
+            title: "Customer Support Contact",
+            text: "24/7 Contact Center Hotline: 16205 or +8809612016205. PBX: +8802 55012600. Our support executives are always ready to assist your banking needs."
+        },
+        email: {
+            title: "Official Email Enquiries",
+            text: "For general queries: info@bankasia-bd.com. For secure verification & technical support: support@bankasia-bd.com. Official domain verification is active."
+        }
+    };
+
+    function openModal(type) {
+        if(modalData[type]) {
+            document.getElementById('modalTitle').innerText = modalData[type].title;
+            document.getElementById('modalText').innerText = modalData[type].text;
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+    }
+
+    function closeModalDirect() {
+        document.getElementById('infoModal').style.display = 'none';
+    }
+
+    function closeModal(e) {
+        if(e.target.id === 'infoModal') {
+            document.getElementById('infoModal').style.display = 'none';
+        }
     }
 </script>
 
