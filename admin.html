@@ -4,239 +4,298 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Admin Panel - Modern QR Generator</title>
+    
     <!-- Quill Rich Text Editor CDN -->
     <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- QRious Library for QR Code Generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+
     <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+        }
+
         body {
             font-family: 'Poppins', 'Hind Siliguri', sans-serif;
-            background: #f1f5f9;
+            background-color: var(--bg-color);
             margin: 0;
-            padding: 30px 20px;
-            color: #1e293b;
+            padding: 40px 20px;
+            color: var(--text-main);
         }
-        .container {
-            max-width: 750px;
-            background: #ffffff;
+
+        .admin-wrapper {
+            max-width: 800px;
             margin: 0 auto;
-            padding: 35px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.08);
             border: 1px solid #e2e8f0;
         }
-        h2 { 
-            text-align: center; 
-            color: #0f172a; 
-            margin-bottom: 25px; 
-            font-weight: 600;
-            font-size: 24px;
-            letter-spacing: -0.5px;
+
+        .panel-header {
+            text-align: center;
+            margin-bottom: 30px;
         }
+
+        .panel-header h2 {
+            color: #0f172a;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .panel-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin: 0;
+        }
+
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
+
         label {
             display: block;
-            font-weight: 500;
-            margin-bottom: 7px;
-            color: #475569;
-            font-size: 13.5px;
-        }
-        input, select {
-            width: 100%;
-            padding: 11px 14px;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 8px;
-            box-sizing: border-box;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-muted);
             font-size: 14px;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 14.5px;
             background-color: #f8fafc;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
-        input:focus, select:focus {
+
+        input[type="text"]:focus, select:focus {
             outline: none;
-            border-color: #2563eb;
+            border-color: var(--primary-color);
             background-color: #ffffff;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
-        .row {
+
+        .form-row {
             display: flex;
-            gap: 16px;
+            gap: 20px;
         }
-        .row .form-group {
+
+        .form-row .form-group {
             flex: 1;
         }
+
         #editor-container {
-            height: 130px;
+            height: 140px;
             background: #f8fafc;
-            border-radius: 8px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
             font-size: 15px;
         }
-        .ql-container {
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-        }
-        .ql-toolbar {
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+
+        .ql-toolbar.ql-snow {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
             background: #f1f5f9;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+
+        .divider {
+            margin: 30px 0;
+            border: 0;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            padding: 13px;
+            padding: 15px;
             width: 100%;
-            font-size: 16px;
-            border-radius: 8px;
+            font-size: 16.5px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
-            margin-top: 15px;
-            transition: opacity 0.2s ease, transform 0.1s ease;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
-        .btn-primary:active { transform: translateY(0); }
-        
+
+        .btn-generate:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+        }
+
         .output-section {
-            margin-top: 30px;
-            padding: 25px;
+            margin-top: 35px;
+            padding: 30px;
             background: #f8fafc;
-            border-radius: 12px;
+            border-radius: 14px;
             border: 1px solid #e2e8f0;
             text-align: center;
         }
+
+        .output-section h3 {
+            margin-top: 0;
+            color: #0f172a;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
         .code-textarea {
             width: 100%;
-            height: 110px;
+            height: 130px;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 12.5px;
-            padding: 10px;
+            font-size: 13px;
+            padding: 12px;
             margin-top: 8px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            resize: none;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             background: #ffffff;
             text-align: left;
+            resize: vertical;
         }
+
         #qrcode {
             display: flex;
             justify-content: center;
-            margin: 15px 0;
+            margin: 20px 0;
+        }
+
+        .btn-copy {
+            background: #0f172a;
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: #1e293b;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>প্রফেশনাল ব্যাংক এডমিন প্যানেল</h2>
-    
-    <form id="adminForm" onsubmit="generateQRCode(event)">
+<div class="admin-wrapper">
+    <div class="container">
         
-        <!-- পেজ সিলেকশন -->
-        <div class="form-group" style="background: #eff6ff; padding: 14px; border-radius: 8px; border: 1px solid #bfdbfe;">
-            <label style="color: #1d4ed8; font-weight: 600;">ভেরিফিকেশন পেজ ডিজাইন সিলেক্ট করুন:</label>
-            <select id="selectedPage" class="form-control" required>
-                <option value="page1.html">Page 1 (Design 1)</option>
-                <option value="page2.html">Page 2 (Design 2)</option>
-                <option value="page3.html" selected>Page 3 (Design 3 - Standard)</option>
-                <option value="page4.html">Page 4 (Design 4)</option>
-                <option value="page5.html">Page 5 (Design 5)</option>
-            </select>
+        <div class="panel-header">
+            <h2>প্রফেশনাল ব্যাংক এডমিন প্যানেল</h2>
+            <p>নিরাপদ ভেরিফিকেশন কিউআর কোড এবং ডেটা জেনারেটর ড্যাশবোর্ড</p>
         </div>
-
-        <!-- টেক্সট এডিটর -->
-        <div class="form-group">
-            <label>হেডিং টেক্সট (ব্যাঙ্কের নাম ও শাখা):</label>
-            <div id="editor-container"></div>
-        </div>
-
-        <div class="row">
-            <div class="form-group">
-                <label>ইউনিক আইডি (Unique ID / Tracking):</label>
-                <input type="text" id="empId" value="1861570025384" required>
-            </div>
-            <div class="form-group">
-                <label>ফন্ট স্টাইল (Font Family):</label>
-                <select id="fontFamily">
-                    <option value="'Hind Siliguri', sans-serif">Hind Siliguri (বাংলা)</option>
-                    <option value="Arial, sans-serif">Arial</option>
-                    <option value="'Times New Roman', serif">Times New Roman</option>
-                    <option value="'Poppins', sans-serif">Poppins</option>
+        
+        <form id="adminForm" onsubmit="generateQRCode(event)">
+            
+            <div class="form-group" style="background: #eff6ff; padding: 18px; border-radius: 12px; border: 1px solid #bfdbfe;">
+                <label style="color: #1d4ed8; font-weight: 700; font-size: 14.5px;">ভেরিফিকেশন পেজ ডিজাইন সিলেক্ট করুন:</label>
+                <select id="selectedPage" required>
+                    <option value="page3.html" selected>Page 3 (Standard Verification Page)</option>
                 </select>
             </div>
-        </div>
 
-        <hr style="margin: 20px 0; border:0; border-top:1px solid #e2e8f0;">
-
-        <!-- মূল ৫টি জিনিস / ফিল্ড -->
-        <div class="row">
             <div class="form-group">
-                <label>১. অ্যাকাউন্ট নং (Account No):</label>
-                <input type="text" id="accountNo" value="1282112000002446" required>
+                <label>হেডিং টেক্সট (ব্যাঙ্কের নাম ও শাখা কাস্টমাইজ করুন):</label>
+                <div id="editor-container"></div>
             </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>ইউনিক আইডি (Unique ID / Tracking):</label>
+                    <input type="text" id="empId" value="1861570025384" required>
+                </div>
+                <div class="form-group">
+                    <label>ফন্ট স্টাইল (Font Family):</label>
+                    <select id="fontFamily">
+                        <option value="'Hind Siliguri', sans-serif">Hind Siliguri</option>
+                        <option value="'Poppins', sans-serif">Poppins</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>১. অ্যাকাউন্ট নং (Account No):</label>
+                    <input type="text" id="accountNo" value="1282112000002446" required>
+                </div>
+                <div class="form-group">
+                    <label>২. অ্যাকাউন্ট নাম (Account Name):</label>
+                    <input type="text" id="accountName" value="AHAMMAD MAZI" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>৩. পরিমাণ / ব্যালেন্স (Amount):</label>
+                    <input type="text" id="amount" value="5,118,827.42" required>
+                </div>
+                <div class="form-group">
+                    <label>৪. রিপোর্ট জেনারেশন তারিখ (Date):</label>
+                    <input type="text" id="date" value="18-Sep-2026" required>
+                </div>
+            </div>
+
             <div class="form-group">
-                <label>২. অ্যাকাউন্ট নাম (Account Name):</label>
-                <input type="text" id="accountName" value="AHAMMAD MAZI" required>
+                <label>৫. স্ট্যাটাস টেক্সট (Status Text):</label>
+                <input type="text" id="statusText" value="Verification success!!!" required>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="form-group">
-                <label>৩. পরিমাণ / ব্যালেন্স (Amount):</label>
-                <input type="text" id="amount" value="5,118,827.42" required>
+            <button type="submit" class="btn-generate">জেনারেট কিউআর কোড ও ডাটা কোড</button>
+        </form>
+
+        <div class="output-section" id="outputSection" style="display: none;">
+            <h3>কিউআর কোড প্রিভিউ ও কোড জেনারেটর</h3>
+            <div id="qrcode"></div>
+            <p id="qrTextLink" style="font-size: 13px; color: #64748b; word-break: break-all; font-weight: 500;"></p>
+
+            <div class="form-group" style="text-align: left; margin-top: 20px;">
+                <label>data.js ফাইলে বসানোর জন্য প্রস্তুতকৃত কোড:</label>
+                <textarea id="codeOutput" class="code-textarea" readonly></textarea>
             </div>
-            <div class="form-group">
-                <label>৪. রিপোর্ট জেনারেশন তারিখ (Date):</label>
-                <input type="text" id="date" value="18-Sep-2026" required>
-            </div>
+            <button type="button" class="btn-copy" onclick="copyCode()">কোড কপি করুন</button>
         </div>
 
-        <div class="form-group">
-            <label>৫. স্ট্যাটাস টেক্সট (Status Text):</label>
-            <input type="text" id="statusText" value="Verification success!!!" required>
-        </div>
-
-        <button type="submit" class="btn-primary">জেনারেট কিউআর কোড ও ডাটা কোড</button>
-    </form>
-
-    <!-- আউটপুট সেকশন -->
-    <div class="output-section" id="outputSection" style="display: none;">
-        <h3 style="margin-top:0; font-size: 18px; color: #0f172a;">কিউআর কোড প্রিভিউ</h3>
-        <div id="qrcode"></div>
-        
-        <div style="margin: 15px 0;">
-            <button onclick="downloadQRCode('png')" style="background: #2563eb; color: white; border: none; padding: 9px 14px; border-radius: 6px; cursor: pointer; font-weight: 500; margin-right: 5px;">Download PNG</button>
-            <button onclick="downloadQRCode('jpg')" style="background: #16a34a; color: white; border: none; padding: 9px 14px; border-radius: 6px; cursor: pointer; font-weight: 500;">Download JPG</button>
-        </div>
-        <p id="qrTextLink" style="font-size: 12.5px; color: #64748b; word-break: break-all;"></p>
-
-        <hr style="margin: 20px 0; border:0; border-top:1px solid #cbd5e1;">
-
-        <div class="form-group" style="text-align: left;">
-            <label>data.js এ বসানোর কোড:</label>
-            <textarea id="codeOutput" class="code-textarea" readonly></textarea>
-        </div>
-        <button type="button" onclick="copyCode()" style="background: #0f172a; color: #fff; padding: 10px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; width: 100%;">কোড কপি করুন</button>
     </div>
 </div>
 
-<!-- Quill Script -->
 <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
 <script>
     const quill = new Quill('#editor-container', {
         modules: {
             toolbar: [
                 ['bold', 'italic', 'underline'],
-                [{ 'color': [] }, { 'background': [] }],
+                [{ 'color': [] }],
                 ['clean']
             ]
         },
         theme: 'snow'
     });
-
-    quill.root.innerHTML = 'Ucb Bank PLC<br>Munshiganj Branch, Dhaka';
+    
+    quill.root.innerHTML = '<p><strong style="color: rgb(0, 76, 151);">BANK ASIA P.L.C.</strong></p>';
 
     function generateQRCode(event) {
         event.preventDefault();
@@ -251,10 +310,11 @@
         const date = document.getElementById('date').value;
         const statusText = document.getElementById('statusText').value;
 
-        const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+        let currentUrl = window.location.href;
+        let baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
         const targetUrl = `${baseUrl}${selectedPage}?id=${id}`;
 
-        document.getElementById('qrTextLink').innerText = "লিংক: " + targetUrl;
+        document.getElementById('qrTextLink').innerText = "জেনারেটেড লিংক: " + targetUrl;
 
         const qrContainer = document.getElementById('qrcode');
         qrContainer.innerHTML = "";
@@ -287,40 +347,9 @@
     function copyCode() {
         const codeBox = document.getElementById('codeOutput');
         codeBox.select();
-        codeBox.setSelectionRange(0, 99999);
         navigator.clipboard.writeText(codeBox.value).then(() => {
-            alert('কোড সফলভাবে কপি হয়েছে!');
+            alert('সফলভাবে কোড কপি করা হয়েছে!');
         });
-    }
-
-    function downloadQRCode(format) {
-        const qrImage = document.querySelector("#qrcode img") || document.querySelector("#qrcode canvas");
-        if (!qrImage) {
-            alert("প্রথমে কিউআর কোড জেনারেট করুন!");
-            return;
-        }
-
-        let imageUrl = qrImage.tagName === "IMG" ? qrImage.src : qrImage.toDataURL("image/png");
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-        const img = new Image();
-        
-        img.crossOrigin = "anonymous";
-        img.src = imageUrl;
-        
-        img.onload = function() {
-            canvas.width = img.width * 4;
-            canvas.height = img.height * 4;
-            ctx.fillStyle = "#FFFFFF";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-            let mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
-            const link = document.createElement('a');
-            link.download = `QR-Code-HighRes.${format}`;
-            link.href = canvas.toDataURL(mimeType, 1.0);
-            link.click();
-        };
     }
 </script>
 
