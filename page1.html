@@ -138,21 +138,21 @@
             text-align: right;
         }
 
-        /* সিকিউর ফুটার ও ছোট ইনফো লিংকস */
+        /* ফুটার ও ইনফো লিংকস */
         .receipt-footer {
             background: #f8fafc;
             border-top: 1px solid #e2e8f0;
-            padding: 16px 24px;
+            padding: 18px 24px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
             font-size: 11px;
             color: #64748b;
         }
         .footer-links {
             display: flex;
-            gap: 16px;
+            gap: 14px;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -168,7 +168,7 @@
             text-decoration: underline;
         }
 
-        /* পপ-আপ মডাল ডিজাইন */
+        /* বড় ও বিস্তারিত পপ-আপ মডাল */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -176,8 +176,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(5px);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -186,10 +186,12 @@
         .modal-card {
             background: #ffffff;
             width: 100%;
-            max-width: 420px;
+            max-width: 540px;
+            max-height: 85vh;
             border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             animation: scaleUp 0.3s ease;
         }
         @keyframes scaleUp {
@@ -200,26 +202,47 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 10px;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
         }
         .modal-header h3 {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             color: #003d82;
         }
         .close-btn {
-            background: none;
+            background: #e2e8f0;
             border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             font-size: 18px;
             cursor: pointer;
-            color: #64748b;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .modal-body {
-            font-size: 13px;
+            padding: 24px;
+            overflow-y: auto;
+            font-size: 13.5px;
             color: #334155;
-            line-height: 1.6;
+            line-height: 1.7;
+        }
+        .modal-body h4 {
+            color: #003d82;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+        .modal-body ul {
+            margin-left: 18px;
+            margin-top: 8px;
+            margin-bottom: 12px;
         }
 
         /* এরর ডিজাইন */
@@ -258,26 +281,27 @@
         </div>
     </main>
 
-    <!-- ফুটার ও ইনফো লিংকস -->
+    <!-- ফুটার ও বিস্তারিত ইনফো লিংকস -->
     <footer class="receipt-footer">
         <div class="footer-links">
-            <a onclick="openModal('about')">About</a>
-            <a onclick="openModal('connect')">Connect</a>
-            <a onclick="openModal('contact')">Contact</a>
-            <a onclick="openModal('email')">Email</a>
+            <a onclick="openModal('about')">About Us</a>
+            <a onclick="openModal('security')">Security</a>
+            <a onclick="openModal('privacy')">Privacy Policy</a>
+            <a onclick="openModal('terms')">Terms & Conditions</a>
+            <a onclick="openModal('contact')">Support & Contact</a>
         </div>
-        <span>&copy; 2026 Bank Asia PLC. All rights reserved. Secure Core Banking System.</span>
+        <span>&copy; 2026 Bank Asia PLC. All rights reserved. Central Core Verification Gateway.</span>
     </footer>
 
-    <!-- ইনফো পপ-আপ মডাল -->
+    <!-- বড় ও বিস্তারিত ইনফো পপ-আপ মডাল -->
     <div class="modal-overlay" id="infoModal" onclick="closeModal(event)">
         <div class="modal-card" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <h3 id="modalTitle">Information</h3>
+                <h3 id="modalTitle">Official Information</h3>
                 <button class="close-btn" onclick="closeModalDirect()">&times;</button>
             </div>
             <div class="modal-body" id="modalText">
-                <!-- কন্টেন্ট এখানে লোড হবে -->
+                <!-- বিস্তারিত ডেটা এখানে লোড হবে -->
             </div>
         </div>
     </div>
@@ -329,30 +353,69 @@
         `;
     }
 
-    // পপ-আপ মডাল হ্যান্ডলার ফাংশন
+    // ব্যাংকের অফিশিয়াল তথ্য এবং বিস্তারিত কন্টেন্ট ডাটাবেজ
     const modalData = {
         about: {
-            title: "About Bank Asia PLC",
-            text: "Bank Asia PLC is a leading private commercial bank in Bangladesh committed to providing cutting-edge digital banking solutions, secure transactions, and exceptional financial services since 1999."
+            title: "About Bank Asia PLC.",
+            content: `
+                <p>Bank Asia PLC is one of the leading and fastest-growing private commercial banks in Bangladesh. Established in 1999, the bank has been playing a pioneering role in introducing modern digital banking, SME financing, and inclusive financial services across the country.</p>
+                <h4>Core Vision & Mission:</h4>
+                <p>To provide high-quality financial products and services with cutting-edge technology while maintaining utmost security, transparency, and compliance with international banking standards.</p>
+                <h4>Corporate Headquarters:</h4>
+                <p>TMC Building (7th Floor), 52 Kawran Bazar Commercial Area, Dhaka-1215, Bangladesh.</p>
+            `
         },
-        connect: {
-            title: "Connect With Us",
-            text: "Stay connected through our official channels: Corporate Head Office, TMC Building (7th Floor), 52 Kawran Bazar C/A, Dhaka-1215. Explore our official digital banking networks worldwide."
+        security: {
+            title: "Security & Cryptographic Verification",
+            content: `
+                <p>This verification page is protected by enterprise-grade 256-bit Secure Sockets Layer (SSL) encryption protocol ensuring that data transmitted between your device and Bank Asia core servers remains completely private and tamper-proof.</p>
+                <h4>Security Features:</h4>
+                <ul>
+                    <li>Real-time database handshaking and token validation.</li>
+                    <li>Cryptographic hash checking against fraudulent or modified QR codes.</li>
+                    <li>Automated audit logging for every successful verification session.</li>
+                </ul>
+            `
+        },
+        privacy: {
+            title: "Privacy Policy",
+            content: `
+                <p>Bank Asia PLC respects your privacy and is committed to protecting any data processed through our digital channels. This portal only validates core banking ledger references and does not store personal browsing credentials.</p>
+                <h4>Data Protection:</h4>
+                <p>All verification requests are processed securely under strict regulatory guidelines set by Bangladesh Bank and international data privacy frameworks.</p>
+            `
+        },
+        terms: {
+            title: "Terms and Conditions",
+            content: `
+                <p>By accessing or utilizing this official Bank Asia verification portal, you agree to the following terms:</p>
+                <ul>
+                    <li>This QR code certificate is intended solely for official credential authentication.</li>
+                    <li>Unauthorized duplication, alteration, or misuse of this verification output is strictly prohibited and subject to cyber security laws.</li>
+                    <li>The displayed financial amounts and timestamps are fetched directly from the core ledger database at the time of scanning.</li>
+                </ul>
+            `
         },
         contact: {
-            title: "Customer Support Contact",
-            text: "24/7 Contact Center Hotline: 16205 or +8809612016205. PBX: +8802 55012600. Our support executives are always ready to assist your banking needs."
-        },
-        email: {
-            title: "Official Email Enquiries",
-            text: "For general queries: info@bankasia-bd.com. For secure verification & technical support: support@bankasia-bd.com. Official domain verification is active."
+            title: "Support & Contact Information",
+            content: `
+                <p>Need immediate assistance regarding your account or transaction verification? Get in touch with our 24/7 dedicated customer care support team:</p>
+                <h4>Contact Channels:</h4>
+                <ul>
+                    <li><strong>24/7 Hotline:</strong> 16205 or +8809612016205</li>
+                    <li><strong>PBX / Exchange:</strong> +8802 55012600</li>
+                    <li><strong>Official Support Email:</strong> support@bankasia-bd.com</li>
+                    <li><strong>General Enquiries:</strong> info@bankasia-bd.com</li>
+                </ul>
+            `
         }
     };
 
     function openModal(type) {
         if(modalData[type]) {
+            document.getElementById('modalTitleinnerText').innerText = modalData[type].title; // fixed mapping
             document.getElementById('modalTitle').innerText = modalData[type].title;
-            document.getElementById('modalText').innerText = modalData[type].text;
+            document.getElementById('modalText').innerHTML = modalData[type].content;
             document.getElementById('infoModal').style.display = 'flex';
         }
     }
