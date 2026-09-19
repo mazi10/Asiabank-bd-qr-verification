@@ -3,418 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bank Asia PLC - Secure Verification Portal</title>
-    <script src="data.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Bank Admin Panel - Modern QR Generator</title>
+    <!-- Quill Rich Text Editor CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', 'Hind Siliguri', sans-serif;
             background: #f1f5f9;
-            color: #0f172a;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            margin: 0;
+            padding: 30px 20px;
+            color: #1e293b;
         }
-
-        .wrapper {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 24px 16px;
-        }
-
-        .verification-receipt {
-            width: 100%;
-            max-width: 520px;
+        .container {
+            max-width: 750px;
             background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-            border: 1px solid #e2e8f0;
-            overflow: hidden;
-        }
-
-        .card-header {
-            background: #ffffff;
-            padding: 24px 24px 16px 24px;
-            text-align: center;
-            border-bottom: 1px solid #f1f5f9;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        .bank-logo {
-            height: 48px;
-            object-fit: contain;
-        }
-        .bank-title {
-            font-size: 22px;
-            font-weight: 800;
-            color: #003d82;
-            letter-spacing: 0.5px;
-        }
-        .secure-subtext {
-            font-size: 11.5px;
-            color: #16a34a;
-            background: #f0fdf4;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            border: 1px solid #bbf7d0;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .status-section {
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-            padding: 24px 20px;
-            text-align: center;
-            color: #ffffff;
-        }
-        
-        .shield-badge {
-            width: 54px;
-            height: 54px;
-            background: #ffffff;
-            color: #0284c7;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            font-weight: bold;
-            margin: 0 auto 12px auto;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-        .status-section h2 {
-            font-size: 17px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        .status-section p {
-            font-size: 12px;
-            opacity: 0.9;
-        }
-
-        .details-body {
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 12px;
-        }
-        .data-row:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-        .data-label {
-            font-size: 11.5px;
-            font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .data-val {
-            font-size: 14.5px;
-            font-weight: 700;
-            color: #0f172a;
-            text-align: right;
-        }
-
-        .receipt-footer {
-            background: #f8fafc;
-            border-top: 1px solid #e2e8f0;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-            font-size: 11px;
-            color: #64748b;
-            text-align: center;
-        }
-        .footer-links {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .footer-links span {
-            color: #0284c7;
-            text-decoration: underline;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 3px 8px;
-            background: #e0f2fe;
-            border-radius: 6px;
-        }
-        .footer-links span:hover {
-            background: #bae6fd;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(4px);
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            padding: 16px;
-        }
-        .modal-card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 500px;
-            max-height: 80vh;
+            margin: 0 auto;
+            padding: 35px;
             border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
-            animation: scaleUp 0.25s ease;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
         }
-        @keyframes scaleUp {
-            from { transform: scale(0.93); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+        h2 { 
+            text-align: center; 
+            color: #0f172a; 
+            margin-bottom: 25px; 
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: -0.5px;
         }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 20px;
-            border-bottom: 1px solid #e2e8f0;
-            background: #f8fafc;
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
+        .form-group {
+            margin-bottom: 18px;
         }
-        .modal-header h3 {
-            font-size: 16px;
-            font-weight: 700;
-            color: #003d82;
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 7px;
+            color: #475569;
+            font-size: 13.5px;
         }
-        .close-btn {
-            background: #e2e8f0;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            font-size: 16px;
-            cursor: pointer;
-            color: #334155;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-body {
-            padding: 20px;
-            overflow-y: auto;
-            font-size: 13px;
-            color: #334155;
-            line-height: 1.6;
-        }
-        .modal-body h4 {
-            color: #003d82;
-            margin-top: 12px;
-            margin-bottom: 4px;
+        input, select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            box-sizing: border-box;
             font-size: 14px;
+            background-color: #f8fafc;
+            transition: all 0.2s ease;
         }
-        .modal-body ul {
-            margin-left: 16px;
-            margin-top: 6px;
-            margin-bottom: 10px;
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2563eb;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
-
-        .error-box {
-            padding: 50px 20px;
+        .row {
+            display: flex;
+            gap: 16px;
+        }
+        .row .form-group {
+            flex: 1;
+        }
+        #editor-container {
+            height: 130px;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+        .ql-container {
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        .ql-toolbar {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            background: #f1f5f9;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            padding: 13px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+        .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
+        .btn-primary:active { transform: translateY(0); }
+        
+        .output-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
             text-align: center;
         }
-        .error-box h3 {
-            color: #dc2626;
-            font-size: 18px;
-            margin-bottom: 6px;
-        }
-        .error-box p {
-            color: #64748b;
+        .code-textarea {
+            width: 100%;
+            height: 110px;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 12.5px;
+            padding: 10px;
+            margin-top: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            resize: none;
+            background: #ffffff;
+            text-align: left;
+        }
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0;
         }
     </style>
 </head>
 <body>
 
-    <main class="wrapper">
-        <div class="verification-receipt" id="dynamicContent"></div>
-    </main>
-
-    <footer class="receipt-footer">
-        <div class="footer-links">
-            <span onclick="openModal('about')">About Us</span>
-            <span onclick="openModal('security')">Security</span>
-            <span onclick="openModal('privacy')">Privacy Policy</span>
-            <span onclick="openModal('terms')">Terms & Conditions</span>
-            <span onclick="openModal('contact')">Support & Contact</span>
+<div class="container">
+    <h2>প্রফেশনাল ব্যাংক এডমিন প্যানেল</h2>
+    
+    <form id="adminForm" onsubmit="generateQRCode(event)">
+        
+        <!-- পেজ সিলেকশন -->
+        <div class="form-group" style="background: #eff6ff; padding: 14px; border-radius: 8px; border: 1px solid #bfdbfe;">
+            <label style="color: #1d4ed8; font-weight: 600;">ভেরিফিকেশন পেজ ডিজাইন সিলেক্ট করুন:</label>
+            <select id="selectedPage" class="form-control" required>
+                <option value="page1.html">Page 1 (Design 1)</option>
+                <option value="page2.html">Page 2 (Design 2)</option>
+                <option value="page3.html" selected>Page 3 (Design 3 - Standard)</option>
+                <option value="page4.html">Page 4 (Design 4)</option>
+                <option value="page5.html">Page 5 (Design 5)</option>
+            </select>
         </div>
-        <span>&copy; 2026 Bank Asia PLC. All rights reserved. Central Core Verification Gateway.</span>
-    </footer>
 
-    <div class="modal-overlay" id="infoModal" onclick="closeModal(event)">
-        <div class="modal-card" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h3 id="modalTitle">Official Information</h3>
-                <button class="close-btn" onclick="closeModalDirect()">&times;</button>
+        <!-- টেক্সট এডিটর -->
+        <div class="form-group">
+            <label>হেডিং টেক্সট (ব্যাঙ্কের নাম ও শাখা):</label>
+            <div id="editor-container"></div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <label>ইউনিক আইডি (Unique ID / Tracking):</label>
+                <input type="text" id="empId" value="1861570025384" required>
             </div>
-            <div class="modal-body" id="modalText"></div>
+            <div class="form-group">
+                <label>ফন্ট স্টাইল (Font Family):</label>
+                <select id="fontFamily">
+                    <option value="'Hind Siliguri', sans-serif">Hind Siliguri (বাংলা)</option>
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="'Times New Roman', serif">Times New Roman</option>
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                </select>
+            </div>
         </div>
+
+        <hr style="margin: 20px 0; border:0; border-top:1px solid #e2e8f0;">
+
+        <!-- মূল ৫টি জিনিস / ফিল্ড -->
+        <div class="row">
+            <div class="form-group">
+                <label>১. অ্যাকাউন্ট নং (Account No):</label>
+                <input type="text" id="accountNo" value="1282112000002446" required>
+            </div>
+            <div class="form-group">
+                <label>২. অ্যাকাউন্ট নাম (Account Name):</label>
+                <input type="text" id="accountName" value="AHAMMAD MAZI" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <label>৩. পরিমাণ / ব্যালেন্স (Amount):</label>
+                <input type="text" id="amount" value="5,118,827.42" required>
+            </div>
+            <div class="form-group">
+                <label>৪. রিপোর্ট জেনারেশন তারিখ (Date):</label>
+                <input type="text" id="date" value="18-Sep-2026" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>৫. স্ট্যাটাস টেক্সট (Status Text):</label>
+            <input type="text" id="statusText" value="Verification success!!!" required>
+        </div>
+
+        <button type="submit" class="btn-primary">জেনারেট কিউআর কোড ও ডাটা কোড</button>
+    </form>
+
+    <!-- আউটপুট সেকশন -->
+    <div class="output-section" id="outputSection" style="display: none;">
+        <h3 style="margin-top:0; font-size: 18px; color: #0f172a;">কিউআর কোড প্রিভিউ</h3>
+        <div id="qrcode"></div>
+        
+        <div style="margin: 15px 0;">
+            <button onclick="downloadQRCode('png')" style="background: #2563eb; color: white; border: none; padding: 9px 14px; border-radius: 6px; cursor: pointer; font-weight: 500; margin-right: 5px;">Download PNG</button>
+            <button onclick="downloadQRCode('jpg')" style="background: #16a34a; color: white; border: none; padding: 9px 14px; border-radius: 6px; cursor: pointer; font-weight: 500;">Download JPG</button>
+        </div>
+        <p id="qrTextLink" style="font-size: 12.5px; color: #64748b; word-break: break-all;"></p>
+
+        <hr style="margin: 20px 0; border:0; border-top:1px solid #cbd5e1;">
+
+        <div class="form-group" style="text-align: left;">
+            <label>data.js এ বসানোর কোড:</label>
+            <textarea id="codeOutput" class="code-textarea" readonly></textarea>
+        </div>
+        <button type="button" onclick="copyCode()" style="background: #0f172a; color: #fff; padding: 10px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; width: 100%;">কোড কপি করুন</button>
     </div>
+</div>
 
+<!-- Quill Script -->
+<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
-    const box = document.getElementById('dynamicContent');
+    const quill = new Quill('#editor-container', {
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{ 'color': [] }, { 'background': [] }],
+                ['clean']
+            ]
+        },
+        theme: 'snow'
+    });
 
-    if (id && employeesData && employeesData[id]) {
-        const d = employeesData[id];
+    quill.root.innerHTML = 'Ucb Bank PLC<br>Munshiganj Branch, Dhaka';
 
-        box.innerHTML = `
-            <div class="card-header">
-                <img src="asia-logo.png" alt="Bank Asia" class="bank-logo" onerror="this.style.display='none'">
-                <h1 class="bank-title">BANK ASIA PLC.</h1>
-                <div class="secure-subtext">
-                    🔒 256-Bit SSL Secured Portal
-                </div>
-            </div>
+    function generateQRCode(event) {
+        event.preventDefault();
 
-            <div class="status-section">
-                <div class="shield-badge">✓</div>
-                <h2>Official Record Verified</h2>
-                <p>Cryptographically authenticated with Bank Asia Central Database.</p>
-            </div>
+        const selectedPage = document.getElementById('selectedPage').value;
+        const id = document.getElementById('empId').value.trim();
+        const headerHtml = quill.root.innerHTML;
+        const fontFamily = document.getElementById('fontFamily').value;
+        const accountNo = document.getElementById('accountNo').value;
+        const accountName = document.getElementById('accountName').value;
+        const amount = document.getElementById('amount').value;
+        const date = document.getElementById('date').value;
+        const statusText = document.getElementById('statusText').value;
 
-            <div class="details-body">
-                <div class="data-row">
-                    <span class="data-label">Account Number</span>
-                    <span class="data-val">${d.accountNo}</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">Account Holder</span>
-                    <span class="data-val">${d.name}</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">Report Date</span>
-                    <span class="data-val">${d.reportDate || 'N/A'}</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">Report Date Balance / Amount</span>
-                    <span class="data-val" style="color: #0284c7;">${d.amount}</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">Current Balance</span>
-                    <span class="data-val">${d.currentBalance}</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">Verification Timestamp</span>
-                    <span class="data-val">${d.date}</span>
-                </div>
-            </div>
-        `;
-    } else {
-        box.innerHTML = `
-            <div class="error-box">
-                <h3>Authentication Failed</h3>
-                <p>The scanned QR code is invalid, expired, or not recognized by Bank Asia servers.</p>
-            </div>
-        `;
+        const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+        const targetUrl = `${baseUrl}${selectedPage}?id=${id}`;
+
+        document.getElementById('qrTextLink').innerText = "লিংক: " + targetUrl;
+
+        const qrContainer = document.getElementById('qrcode');
+        qrContainer.innerHTML = "";
+        const canvas = document.createElement('canvas');
+        qrContainer.appendChild(canvas);
+
+        new QRious({
+            element: canvas,
+            value: targetUrl,
+            size: 180,
+            background: 'white',
+            foreground: 'black'
+        });
+
+        const escapedHeader = headerHtml.replace(/`/g, '\\`');
+        const jsCode = `    "${id}": {
+        headerHtml: \`${escapedHeader}\`,
+        fontFamily: "${fontFamily}",
+        accountNo: "${accountNo}",
+        name: "${accountName}",
+        amount: "${amount}",
+        date: "${date}",
+        statusText: "${statusText}"
+    },`;
+
+        document.getElementById('codeOutput').value = jsCode;
+        document.getElementById('outputSection').style.display = 'block';
     }
 
-    const modalData = {
-        about: {
-            title: "About Bank Asia PLC.",
-            content: `
-                <p>Bank Asia PLC is one of the leading and fastest-growing private commercial banks in Bangladesh. Established in 1999, the bank has been playing a pioneering role in introducing modern digital banking, SME financing, and inclusive financial services across the country.</p>
-                <h4>Core Vision & Mission:</h4>
-                <p>To provide high-quality financial products and services with cutting-edge technology while maintaining utmost security, transparency, and compliance with international banking standards.</p>
-                <h4>Corporate Headquarters:</h4>
-                <p>TMC Building (7th Floor), 52 Kawran Bazar Commercial Area, Dhaka-1215, Bangladesh.</p>
-            `
-        },
-        security: {
-            title: "Security & Cryptographic Verification",
-            content: `
-                <p>This verification page is protected by enterprise-grade 256-bit Secure Sockets Layer (SSL) encryption protocol ensuring that data transmitted between your device and Bank Asia core servers remains completely private and tamper-proof.</p>
-                <h4>Security Features:</h4>
-                <ul>
-                    <li>Real-time database handshaking and token validation.</li>
-                    <li>Cryptographic hash checking against fraudulent or modified QR codes.</li>
-                    <li>Automated audit logging for every successful verification session.</li>
-                </ul>
-            `
-        },
-        privacy: {
-            title: "Privacy Policy",
-            content: `
-                <p>Bank Asia PLC respects your privacy and is committed to protecting any data processed through our digital channels. This portal only validates core banking ledger references and does not store personal browsing credentials.</p>
-                <h4>Data Protection:</h4>
-                <p>All verification requests are processed securely under strict regulatory guidelines set by Bangladesh Bank and international data privacy frameworks.</p>
-            `
-        },
-        terms: {
-            title: "Terms and Conditions",
-            content: `
-                <p>By accessing or utilizing this official Bank Asia verification portal, you agree to the following terms:</p>
-                <ul>
-                    <li>This QR code certificate is intended solely for official credential authentication.</li>
-                    <li>Unauthorized duplication, alteration, or misuse of this verification output is strictly prohibited and subject to cyber security laws.</li>
-                    <li>The displayed financial amounts and timestamps are fetched directly from the core ledger database at the time of scanning.</li>
-                </ul>
-            `
-        },
-        contact: {
-            title: "Support & Contact Information",
-            content: `
-                <p>Need immediate assistance regarding your account or transaction verification? Get in touch with our 24/7 dedicated customer care support team:</p>
-                <h4>Contact Channels:</h4>
-                <ul>
-                    <li><strong>24/7 Hotline:</strong> 16205 or +8809612016205</li>
-                    <li><strong>PBX / Exchange:</strong> +8802 55012600</li>
-                    <li><strong>Official Support Email:</strong> support@bankasia-bd.com</li>
-                    <li><strong>General Enquiries:</strong> info@bankasia-bd.com</li>
-                </ul>
-            `
-        }
-    };
-
-    function openModal(type) {
-        if(modalData[type]) {
-            document.getElementById('modalTitle').innerText = modalData[type].title;
-            document.getElementById('modalText').innerHTML = modalData[type].content;
-            document.getElementById('infoModal').style.display = 'flex';
-        }
+    function copyCode() {
+        const codeBox = document.getElementById('codeOutput');
+        codeBox.select();
+        codeBox.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(codeBox.value).then(() => {
+            alert('কোড সফলভাবে কপি হয়েছে!');
+        });
     }
 
-    function closeModalDirect() {
-        document.getElementById('infoModal').style.display = 'none';
-    }
-
-    function closeModal(e) {
-        if(e.target.id === 'infoModal') {
-            document.getElementById('infoModal').style.display = 'none';
+    function downloadQRCode(format) {
+        const qrImage = document.querySelector("#qrcode img") || document.querySelector("#qrcode canvas");
+        if (!qrImage) {
+            alert("প্রথমে কিউআর কোড জেনারেট করুন!");
+            return;
         }
+
+        let imageUrl = qrImage.tagName === "IMG" ? qrImage.src : qrImage.toDataURL("image/png");
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+        
+        img.crossOrigin = "anonymous";
+        img.src = imageUrl;
+        
+        img.onload = function() {
+            canvas.width = img.width * 4;
+            canvas.height = img.height * 4;
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            let mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
+            const link = document.createElement('a');
+            link.download = `QR-Code-HighRes.${format}`;
+            link.href = canvas.toDataURL(mimeType, 1.0);
+            link.click();
+        };
     }
 </script>
 

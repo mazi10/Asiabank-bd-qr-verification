@@ -3,156 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - QR & Page Generator</title>
+    <title>Bank Admin Panel - Modern QR Generator</title>
     <!-- Quill Rich Text Editor CDN -->
     <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
-    <!-- Google Fonts জন্য লিংক -->
-    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Anek+Bangla:wght@400;700&family=Baloo+Da+2:wght@400;700&family=Balsamiq+Sans&family=Cairo:wght@400;700&family=Cinzel:wght@400;700&family=Cookie&family=Cormorant+Garamond:wght@400;700&family=Dancing+Script:wght@400;700&family=Exo+2:wght@400;700&family=Fira+Code:wght@400;700&family=Hind+Siliguri:wght@400;600;700&family=Inconsolata:wght@400;700&family=Josefin+Sans:wght@400;700&family=Kanit:wght@400;700&family=Lato:wght@400;700&family=Lobster&family=Merriweather:wght@400;700&family=Montserrat:wght@400;700&family=Noto+Serif+Bengali:wght@400;700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;700&family=Oswald:wght@400;700&family=Pacifico&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;700&family=Raleway:wght@400;700&family=Roboto:wght@400;700&family=Rubik:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Ubuntu:wght@400;700&family=Work+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f7f6;
+            font-family: 'Poppins', 'Hind Siliguri', sans-serif;
+            background: #f1f5f9;
             margin: 0;
-            padding: 20px;
+            padding: 30px 20px;
+            color: #1e293b;
         }
         .container {
-            max-width: 800px;
-            background: #fff;
+            max-width: 750px;
+            background: #ffffff;
             margin: 0 auto;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
         }
-        h2 { text-align: center; color: #1a365d; margin-bottom: 25px; }
+        h2 { 
+            text-align: center; 
+            color: #0f172a; 
+            margin-bottom: 25px; 
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: -0.5px;
+        }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
         label {
             display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
-            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 7px;
+            color: #475569;
+            font-size: 13.5px;
         }
         input, select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 11px 14px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
             box-sizing: border-box;
             font-size: 14px;
+            background-color: #f8fafc;
+            transition: all 0.2s ease;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2563eb;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
         .row {
             display: flex;
-            gap: 15px;
+            gap: 16px;
         }
         .row .form-group {
             flex: 1;
         }
-        /* এডিটর স্টাইল ও কাস্টম ফন্ট ক্লাস */
         #editor-container {
-            height: 140px;
-            background: #fff;
-            font-size: 16px;
+            height: 130px;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-size: 15px;
         }
-        .ql-snow .ql-picker.ql-size .ql-picker-label::before,
-        .ql-snow .ql-picker.ql-size .ql-picker-item::before {
-            content: attr(data-value) !important;
+        .ql-container {
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
         }
-
-        /* ৫০টি ফন্টের ক্লাস */
-        .ql-font-arial { font-family: Arial, sans-serif; }
-        .ql-font-times { font-family: 'Times New Roman', serif; }
-        .ql-font-courier { font-family: 'Courier New', monospace; }
-        .ql-font-georgia { font-family: Georgia, serif; }
-        .ql-font-verdana { font-family: Verdana, sans-serif; }
-        .ql-font-tahoma { font-family: Tahoma, sans-serif; }
-        .ql-font-trebuchet { font-family: 'Trebuchet MS', sans-serif; }
-        .ql-font-impact { font-family: Impact, sans-serif; }
-        .ql-font-comic { font-family: 'Comic Sans MS', cursive, sans-serif; }
-        .ql-font-palatino { font-family: 'Palatino Linotype', book antiqua, serif; }
-        .ql-font-garamond { font-family: Garamond, serif; }
-        .ql-font-bookman { font-family: 'Bookman Old Style', serif; }
-        .ql-font-century { font-family: 'Century Gothic', sans-serif; }
-        .ql-font-arial-black { font-family: 'Arial Black', sans-serif; }
-        .ql-font-copperplate { font-family: Copperplate, fantasy; }
-        .ql-font-papyrus { font-family: Papyrus, fantasy; }
-        .ql-font-brush { font-family: 'Brush Script MT', cursive; }
-        .ql-font-roboto { font-family: 'Roboto', sans-serif; }
-        .ql-font-poppins { font-family: 'Poppins', sans-serif; }
-        .ql-font-opensans { font-family: 'Open Sans', sans-serif; }
-        .ql-font-latofont { font-family: 'Lato', sans-serif; }
-        .ql-font-montserrat { font-family: 'Montserrat', sans-serif; }
-        .ql-font-raleway { font-family: 'Raleway', sans-serif; }
-        .ql-font-nunito { font-family: 'Nunito', sans-serif; }
-        .ql-font-ubuntu { font-family: 'Ubuntu', sans-serif; }
-        .ql-font-oswald { font-family: 'Oswald', sans-serif; }
-        .ql-font-playfair { font-family: 'Playfair Display', serif; }
-        .ql-font-merriweather { font-family: 'Merriweather', serif; }
-        .ql-font-lora { font-family: 'Lora', serif; }
-        .ql-font-ptsans { font-family: 'PT Sans', sans-serif; }
-        .ql-font-sourcesans { font-family: 'Source Sans Pro', sans-serif; }
-        .ql-font-hindsiliguri { font-family: 'Hind Siliguri', sans-serif; }
-        .ql-font-notoserif { font-family: 'Noto Serif Bengali', serif; }
-        .ql-font-anekbangla { font-family: 'Anek Bangla', sans-serif; }
-        .ql-font-balooda { font-family: 'Baloo Da 2', cursive; }
-        .ql-font-abhayalibre { font-family: 'Abhaya Libre', serif; }
-        .ql-font-kanit { font-family: 'Kanit', sans-serif; }
-        .ql-font-rubik { font-family: 'Rubik', sans-serif; }
-        .ql-font-work-sans { font-family: 'Work Sans', sans-serif; }
-        .ql-font-josefin { font-family: 'Josefin Sans', sans-serif; }
-        .ql-font-cairo { font-family: 'Cairo', sans-serif; }
-        .ql-font-exo2 { font-family: 'Exo 2', sans-serif; }
-        .ql-font-inconsolata { font-family: 'Inconsolata', monospace; }
-        .ql-font-firacode { font-family: 'Fira Code', monospace; }
-        .ql-font-sourcecode { font-family: 'Source Code Pro', monospace; }
-        .ql-font-cinzel { font-family: 'Cinzel', serif; }
-        .ql-font-cormorant { font-family: 'Cormorant Garamond', serif; }
-        .ql-font-dancing { font-family: 'Dancing Script', cursive; }
-        .ql-font-pacifico { font-family: 'Pacifico', cursive; }
-        .ql-font-lobster { font-family: 'Lobster', cursive; }
-
-        /* ৬ রকমের ফন্ট স্টাইল / ওয়েট */
-        .ql-font-weight-thin { font-weight: 100 !important; }
-        .ql-font-weight-light { font-weight: 300 !important; }
-        .ql-font-weight-normal { font-weight: 400 !important; }
-        .ql-font-weight-medium { font-weight: 500 !important; }
-        .ql-font-weight-bold { font-weight: 700 !important; }
-        .ql-font-weight-black { font-weight: 900 !important; }
-
-        button {
-            background: #28a745;
+        .ql-toolbar {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            background: #f1f5f9;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
             border: none;
-            padding: 12px;
+            padding: 13px;
             width: 100%;
             font-size: 16px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
-        button:hover { background: #218838; }
+        .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
+        .btn-primary:active { transform: translateY(0); }
         
         .output-section {
-            margin-top: 25px;
-            padding: 20px;
-            background: #e9ecef;
-            border-radius: 8px;
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
             text-align: center;
         }
         .code-textarea {
             width: 100%;
-            height: 120px;
-            font-family: monospace;
-            font-size: 12px;
-            padding: 8px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            height: 110px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12.5px;
+            padding: 10px;
+            margin-top: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
             resize: none;
-            background: #fff;
+            background: #ffffff;
             text-align: left;
         }
         #qrcode {
@@ -165,136 +130,105 @@
 <body>
 
 <div class="container">
-    <h2>প্রফেশনাল ব্যাংক এডমিন প্যানেল ও পেজ সিলেক্টর</h2>
+    <h2>প্রফেশনাল ব্যাংক এডমিন প্যানেল</h2>
     
     <form id="adminForm" onsubmit="generateQRCode(event)">
         
-        <!-- নতুন যোগ করা অপশন: ভেরিফিকেশন পেজ সিলেক্ট করার ড্রপডাউন -->
-        <div class="form-group" style="background: #e0f2fe; padding: 12px; border-radius: 6px; border: 1px solid #bae6fd;">
-            <label style="color: #0369a1;">ভেরিফিকেশন পেজ ডিজাইন সিলেক্ট করুন:</label>
+        <!-- পেজ সিলেকশন -->
+        <div class="form-group" style="background: #eff6ff; padding: 14px; border-radius: 8px; border: 1px solid #bfdbfe;">
+            <label style="color: #1d4ed8; font-weight: 600;">ভেরিফিকেশন পেজ ডিজাইন সিলেক্ট করুন:</label>
             <select id="selectedPage" class="form-control" required>
                 <option value="page1.html">Page 1 (Design 1)</option>
                 <option value="page2.html">Page 2 (Design 2)</option>
-                <option value="page3.html">page 3 (Design 3)</option>
+                <option value="page3.html" selected>Page 3 (Design 3 - Standard)</option>
                 <option value="page4.html">Page 4 (Design 4)</option>
                 <option value="page5.html">Page 5 (Design 5)</option>
             </select>
         </div>
 
-        <!-- লাইভ টেক্সট এডিটর -->
+        <!-- টেক্সট এডিটর -->
         <div class="form-group">
-            <label style="color: #007bff;">হেডিং টেক্সট (৫০টি ফন্ট ও ৬ রকম স্টাইল ব্যবহার করুন):</label>
+            <label>হেডিং টেক্সট (ব্যাঙ্কের নাম ও শাখা):</label>
             <div id="editor-container"></div>
         </div>
 
-        <div class="form-group">
-            <label>মূল ফন্ট স্টাইল (Font Family):</label>
-            <select id="fontFamily">
-                <option value="Arial, sans-serif">Arial</option>
-                <option value="'Times New Roman', serif">Times New Roman</option>
-                <option value="'Courier New', monospace">Courier New</option>
-                <option value="Georgia, serif">Georgia</option>
-                <option value="Verdana, sans-serif">Verdana</option>
-            </select>
-        </div>
-
-        <hr style="margin: 20px 0; border:0; border-top:1px solid #ddd;">
-
-        <!-- অ্যাকাউন্ট ও ডেটা ফিল্ডসমূহ -->
         <div class="row">
             <div class="form-group">
-                <label>ইউনিক আইডি (Unique ID):</label>
+                <label>ইউনিক আইডি (Unique ID / Tracking):</label>
                 <input type="text" id="empId" value="1861570025384" required>
             </div>
             <div class="form-group">
-                <label>অ্যাকাউন্ট নং (Account No):</label>
+                <label>ফন্ট স্টাইল (Font Family):</label>
+                <select id="fontFamily">
+                    <option value="'Hind Siliguri', sans-serif">Hind Siliguri (বাংলা)</option>
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="'Times New Roman', serif">Times New Roman</option>
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                </select>
+            </div>
+        </div>
+
+        <hr style="margin: 20px 0; border:0; border-top:1px solid #e2e8f0;">
+
+        <!-- মূল ৫টি জিনিস / ফিল্ড -->
+        <div class="row">
+            <div class="form-group">
+                <label>১. অ্যাকাউন্ট নং (Account No):</label>
                 <input type="text" id="accountNo" value="1282112000002446" required>
             </div>
-        </div>
-
-        <div class="row">
             <div class="form-group">
-                <label>অ্যাকাউন্ট নাম (Account Name):</label>
+                <label>২. অ্যাকাউন্ট নাম (Account Name):</label>
                 <input type="text" id="accountName" value="AHAMMAD MAZI" required>
             </div>
-            <div class="form-group">
-    <label>Report Date (যেমন: 15-Sep-2026)</label>
-    <input type="text" id="reportDateInput" placeholder="Enter report date" required>
-</div>
-            <div class="form-group">
-                <label>রিপোর্ট ডেট ব্যালেন্স / পরিমাণ (Amount):</label>
-                <input type="text" id="amount" value="5,118,827.42" required>
-            </div>
         </div>
 
         <div class="row">
             <div class="form-group">
-                <label>কারেন্ট ব্যালেন্স (Current Balance):</label>
-                <input type="text" id="currentBalance" value="1,200,500.00" required>
+                <label>৩. পরিমাণ / ব্যালেন্স (Amount):</label>
+                <input type="text" id="amount" value="5,118,827.42" required>
             </div>
             <div class="form-group">
-                <label>রিপোর্ট জেনারেশন তারিখ (Date):</label>
+                <label>৪. রিপোর্ট জেনারেশন তারিখ (Date):</label>
                 <input type="text" id="date" value="18-Sep-2026" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label>স্ট্যাটাস টেক্সট (Status Text):</label>
+            <label>৫. স্ট্যাটাস টেক্সট (Status Text):</label>
             <input type="text" id="statusText" value="Verification success!!!" required>
         </div>
 
-        <button type="submit" class="btn">জেনারেট কিউআর কোড ও ডাটা কোড</button>
+        <button type="submit" class="btn-primary">জেনারেট কিউআর কোড ও ডাটা কোড</button>
     </form>
 
-    <!-- কিউআর কোড ও কোড কপি সেকশন -->
+    <!-- আউটপুট সেকশন -->
     <div class="output-section" id="outputSection" style="display: none;">
-        <h3>কিউআর কোড প্রিভিউ</h3>
+        <h3 style="margin-top:0; font-size: 18px; color: #0f172a;">কিউআর কোড প্রিভিউ</h3>
         <div id="qrcode"></div>
-        <!-- হাই-রেজুলেশন ডাউনলোড বাটন -->
-    <div style="margin: 10px 0;">
-        <button onclick="downloadQRCode('png')" style="background: #2563eb; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-right: 5px;">Download PNG</button>
-        <button onclick="downloadQRCode('jpg')" style="background: #16a34a; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">Download JPG</button>
-    </div>
-        <p id="qrTextLink" style="font-size: 13px; color: #555; word-break: break-all;"></p>
+        
+        <div style="margin: 15px 0;">
+            <button onclick="downloadQRCode('png')" style="background: #2563eb; color: white; border: none; padding: 9px 14px; border-radius: 6px; cursor: pointer; font-weight: 500; margin-right: 5px;">Download PNG</button>
+            <button onclick="downloadQRCode('jpg')" style="background: #16a34a; color: white; border: none; padding: 9px 14px; border-radius: 6px; cursor: pointer; font-weight: 500;">Download JPG</button>
+        </div>
+        <p id="qrTextLink" style="font-size: 12.5px; color: #64748b; word-break: break-all;"></p>
 
-        <hr style="margin: 15px 0; border:0; border-top:1px solid #ccc;">
+        <hr style="margin: 20px 0; border:0; border-top:1px solid #cbd5e1;">
 
         <div class="form-group" style="text-align: left;">
-            <label>data.js এ বসানোর কোড (কপি করুন):</label>
+            <label>data.js এ বসানোর কোড:</label>
             <textarea id="codeOutput" class="code-textarea" readonly></textarea>
         </div>
-        <button type="button" onclick="copyCode()" style="background: #007bff;">কোড কপি করুন</button>
+        <button type="button" onclick="copyCode()" style="background: #0f172a; color: #fff; padding: 10px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; width: 100%;">কোড কপি করুন</button>
     </div>
 </div>
 
 <!-- Quill Script -->
 <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
 <script>
-    const Size = Quill.import('attributors/style/size');
-    Size.whitelist = ['12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px'];
-    Quill.register(Size, true);
-
-    const Font = Quill.import('formats/font');
-    Font.whitelist = [
-        'arial', 'times', 'courier', 'georgia', 'verdana', 'tahoma', 'trebuchet', 'impact', 'comic', 'palatino',
-        'garamond', 'bookman', 'century', 'arial-black', 'copperplate', 'papyrus', 'brush', 'roboto', 'poppins', 'opensans',
-        'latofont', 'montserrat', 'raleway', 'nunito', 'ubuntu', 'oswald', 'playfair', 'merriweather', 'lora', 'ptsans',
-        'sourcesans', 'hindsiliguri', 'notoserif', 'anekbangla', 'balooda', 'abhayalibre', 'kanit', 'rubik', 'work-sans', 'josefin',
-        'cairo', 'exo2', 'inconsolata', 'firacode', 'sourcecode', 'cinzel', 'cormorant', 'dancing', 'pacifico', 'lobster'
-    ];
-    Quill.register(Font, true);
-
-    const Header = Quill.import('formats/header');
-    Header.whitelist = ['thin', 'light', 'normal', 'medium', 'bold', 'black'];
-    Quill.register(Header, true);
-
     const quill = new Quill('#editor-container', {
         modules: {
             toolbar: [
-                [{ 'font': Font.whitelist }],
-                [{ 'header': Header.whitelist }],
-                [{ 'size': ['12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px'] }],
-                ['italic', 'underline'],
+                ['bold', 'italic', 'underline'],
                 [{ 'color': [] }, { 'background': [] }],
                 ['clean']
             ]
@@ -302,29 +236,26 @@
         theme: 'snow'
     });
 
-    quill.root.innerHTML = 'Ucb bank plc<br>Munshiganj, dhaka<br>Tongibari Munshiganj';
+    quill.root.innerHTML = 'Ucb Bank PLC<br>Munshiganj Branch, Dhaka';
 
     function generateQRCode(event) {
         event.preventDefault();
 
-        const selectedPage = document.getElementById('selectedPage').value; // যেমন: page2.html
+        const selectedPage = document.getElementById('selectedPage').value;
         const id = document.getElementById('empId').value.trim();
         const headerHtml = quill.root.innerHTML;
         const fontFamily = document.getElementById('fontFamily').value;
         const accountNo = document.getElementById('accountNo').value;
         const accountName = document.getElementById('accountName').value;
         const amount = document.getElementById('amount').value;
-        const currentBalance = document.getElementById('currentBalance').value;
         const date = document.getElementById('date').value;
         const statusText = document.getElementById('statusText').value;
 
-        // লিংক জেনারেট করা (সিলেক্ট করা পেজের নামের সাথে)
         const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
         const targetUrl = `${baseUrl}${selectedPage}?id=${id}`;
 
         document.getElementById('qrTextLink').innerText = "লিংক: " + targetUrl;
 
-        // QR Code তৈরি করা
         const qrContainer = document.getElementById('qrcode');
         qrContainer.innerHTML = "";
         const canvas = document.createElement('canvas');
@@ -338,7 +269,6 @@
             foreground: 'black'
         });
 
-        // data.js কোড তৈরি করা
         const escapedHeader = headerHtml.replace(/`/g, '\\`');
         const jsCode = `    "${id}": {
         headerHtml: \`${escapedHeader}\`,
@@ -346,7 +276,6 @@
         accountNo: "${accountNo}",
         name: "${accountName}",
         amount: "${amount}",
-        currentBalance: "${currentBalance}",
         date: "${date}",
         statusText: "${statusText}"
     },`;
@@ -362,60 +291,37 @@
         navigator.clipboard.writeText(codeBox.value).then(() => {
             alert('কোড সফলভাবে কপি হয়েছে!');
         });
-
     }
-    function copyCode() {
-            const codeBox = document.getElementById('codeOutput');
-            codeBox.select();
-            codeBox.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(codeBox.value).then(() => {
-                alert('কোড সফলভাবে কপি হয়েছে!');
-            });
+
+    function downloadQRCode(format) {
+        const qrImage = document.querySelector("#qrcode img") || document.querySelector("#qrcode canvas");
+        if (!qrImage) {
+            alert("প্রথমে কিউআর কোড জেনারেট করুন!");
+            return;
         }
 
-        // কিউআর কোড হাই-রেজুলেশন ডাউনলোড ফাংশন (এটি এখানে পেস্ট করুন)
-        function downloadQRCode(format) {
-            const qrImage = document.querySelector("#qrcode img") || document.querySelector("#qrcode canvas");
-            
-            if (!qrImage) {
-                alert("প্রথমে কিউআর কোড জেনারেট করুন!");
-                return;
-            }
+        let imageUrl = qrImage.tagName === "IMG" ? qrImage.src : qrImage.toDataURL("image/png");
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+        
+        img.crossOrigin = "anonymous";
+        img.src = imageUrl;
+        
+        img.onload = function() {
+            canvas.width = img.width * 4;
+            canvas.height = img.height * 4;
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-            let imageUrl = "";
-
-            if (qrImage.tagName === "IMG") {
-                imageUrl = qrImage.src;
-            } else if (qrImage.tagName === "CANVAS") {
-                imageUrl = qrImage.toDataURL("image/png");
-            }
-
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
-            const img = new Image();
-            
-            img.crossOrigin = "anonymous";
-            img.src = imageUrl;
-            
-            img.onload = function() {
-                canvas.width = img.width * 4;
-                canvas.height = img.height * 4;
-                
-                ctx.fillStyle = "#FFFFFF";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                let mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
-                let dataURL = canvas.toDataURL(mimeType, 1.0);
-
-                const link = document.createElement('a');
-                link.download = `QR-Code-HighRes.${format}`;
-                link.href = dataURL;
-                link.click();
-            };
-        }
-
+            let mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
+            const link = document.createElement('a');
+            link.download = `QR-Code-HighRes.${format}`;
+            link.href = canvas.toDataURL(mimeType, 1.0);
+            link.click();
+        };
+    }
 </script>
 
 </body>
