@@ -1,4 +1,4 @@
-const employeesData = {
+const bankData = {
     // admin.html থেকে জেনারেট করা কোড এখানে পেস্ট করবেন
              "1122": {
         headerHtml: `<p><strong style="color: rgb(0, 76, 151);">BANK ASIA P.L.C.</strong></p>`,
