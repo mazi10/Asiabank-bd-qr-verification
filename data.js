@@ -19,6 +19,12 @@ const bankData = {
         date: "15-Sep-2026",
         statusText: "Verification success!!!"
     },
+        "1200": {
+        accountNo: "566556",
+        name: "2561411",
+        amount: "11101",
+        date: "06-09-2002"
+    },
 
 
 
